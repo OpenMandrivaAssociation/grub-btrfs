@@ -1,9 +1,9 @@
 %define		debug_package %{nil}
 
 Name:		grub-btrfs
-Version:	4.13
+Version:	4.14
 Release:	1
-Source0:	https://github.com/Antynea/grub-btrfs/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:	https://github.com/Antynea/grub-btrfs/archive/v%{version}/%{name}-%{version}.tar.gz
 Summary:	Include btrfs snapshots at boot menu for GRUB
 URL:		https://github.com/Antynea/grub-btrfs
 License:	GPL-3.0
@@ -24,6 +24,14 @@ allowing you to select snapshots for booting in case of system failures.
 
 %prep
 %autosetup -p1
+
+# Set config file to use /boot/grub2/grub.cfg
+sed -i -e 's@#GRUB_BTRFS_GRUB_DIRNAME="/boot/grub2"@GRUB_BTRFS_GRUB_DIRNAME="/boot/grub2"@g' config
+# Set config file to use /usr/bin/grub2-mkconfig
+sed -i -e 's@#GRUB_BTRFS_MKCONFIG=/usr/bin/grub2-mkconfig@GRUB_BTRFS_MKCONFIG=/usr/bin/grub2-mkconfig@g' config
+# Set config file to use grub2-script-check
+sed -i -e 's@#GRUB_BTRFS_SCRIPT_CHECK=grub2-script-check@GRUB_BTRFS_SCRIPT_CHECK=grub2-script-check@g' config
+
 
 %build
 mkdir   TEMP_DIR
